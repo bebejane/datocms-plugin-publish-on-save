@@ -18,6 +18,8 @@ export default function PublishOnSave({ ctx }: PropTypes) {
 
     if (!ctx.currentUserAccessToken) return
 
+    const isPublished = itemStatus === 'published'
+    const isUpdated = itemStatus === 'draft' || ctx.itemStatus === 'updated'
     const client = buildClient({ apiToken: ctx.currentUserAccessToken as string })
 
     const confirm = async () => {
@@ -27,7 +29,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       return await ctx.openConfirm({
         title: 'Save and publish?',
         content: '',
-        cancel: { label: 'No, save draft', value: false },
+        cancel: { label: 'Cancel', value: false },
         choices: [
           { label: 'Yes, publish now', value: true, intent: 'negative' },
         ],
@@ -50,16 +52,10 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       }
     }
 
-    const isPublished = itemStatus === 'published'
-    const isUpdated = itemStatus === 'draft' || ctx.itemStatus === 'updated'
-
     if (draftMode && !isPublished && isUpdated)
       publishItem()
 
   }, [itemStatus, draftMode, parameters.alertOnSave])
 
-  return (
-    <Canvas ctx={ctx} noAutoResizer={true}>
-    </Canvas>
-  );
+  return null
 }
