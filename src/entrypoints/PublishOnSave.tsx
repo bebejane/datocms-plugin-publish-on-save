@@ -25,9 +25,9 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       if (!parameters.alertOnSave) return true
 
       return await ctx.openConfirm({
-        title: 'Save and Publish?',
+        title: 'Save and publish?',
         content: '',
-        cancel: { label: 'Cancel', value: false },
+        cancel: { label: 'No, save draft', value: false },
         choices: [
           { label: 'Yes, publish now', value: true, intent: 'negative' },
         ],
