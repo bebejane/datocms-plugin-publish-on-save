@@ -43,7 +43,8 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       const confirmed = await confirm()
 
       if (confirmed) {
-        ctx.notice(!parameters.alertOnSave ? 'Auto-Publishing record...' : 'Publishing record...')
+        const message = !parameters.alertOnSave ? 'Auto-Publishing record...' : 'Publishing record...'
+        ctx.notice(message)
         try {
           await client.items.publish(ctx.item?.id as string, { recursive: true })
         } catch (e) {
