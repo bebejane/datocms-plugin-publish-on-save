@@ -16,7 +16,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
 
   useEffect(() => {
 
-    if (!ctx.currentUserAccessToken) return
+    if (!ctx.currentUserAccessToken || parameters.disable) return
 
     const isPublished = itemStatus === 'published'
     const isUpdated = itemStatus === 'draft' || ctx.itemStatus === 'updated'

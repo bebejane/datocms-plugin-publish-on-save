@@ -2,13 +2,15 @@ import { RenderConfigScreenCtx } from 'datocms-plugin-sdk';
 import { Canvas, SwitchField, Form, Button, Spinner } from 'datocms-react-ui';
 import { useState } from 'react';
 
-const defaultSettings = {
-  alertOnSave: true
-} as Parameters
-
 export type Parameters = {
   alertOnSave: boolean;
+  disable: boolean;
 }
+
+const defaultSettings = {
+  alertOnSave: true,
+  disable: false
+} as Parameters
 
 type Props = {
   ctx: RenderConfigScreenCtx;
@@ -18,6 +20,7 @@ export default function ConfigScreen({ ctx }: Props) {
   const parameters = ctx.plugin.attributes.parameters as Parameters;
   const [settings, setSettings] = useState(parameters || defaultSettings)
   const [saving, setSaving] = useState(false)
+  const haveChanged = JSON.stringify(parameters) !== JSON.stringify(settings)
 
   const saveSettings = async () => {
     setSaving(true)
@@ -25,12 +28,11 @@ export default function ConfigScreen({ ctx }: Props) {
       await ctx.updatePluginParameters({ ...settings });
       ctx.notice('Saved plugin settings')
     } catch (e) {
-      ctx.notice('Error saving settings')
+      ctx.notice(`Error saving settings: ${(e as Error).message ?? e}`)
     }
     setSaving(false)
   }
 
-  const haveChanged = JSON.stringify(parameters) !== JSON.stringify(settings)
   return (
     <Canvas ctx={ctx}>
       <Form onSubmit={saveSettings}>
@@ -40,6 +42,13 @@ export default function ConfigScreen({ ctx }: Props) {
           label={'Alert on save'}
           onChange={(value) => setSettings((prev) => ({ ...prev, alertOnSave: value }))}
           value={settings.alertOnSave}
+        />
+        <SwitchField
+          id={'disabled'}
+          name={'disabled'}
+          label={'Disable'}
+          onChange={(value) => setSettings((prev) => ({ ...prev, disable: value }))}
+          value={settings.disable}
         />
       </Form>
       <br />
