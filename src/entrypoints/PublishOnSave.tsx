@@ -29,7 +29,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       return await ctx.openConfirm({
         title: 'Save and publish?',
         content: '',
-        cancel: { label: 'Cancel', value: false },
+        cancel: { label: 'Save draft only', value: false },
         choices: [
           { label: 'Yes, publish now', value: true, intent: 'negative' },
         ],
