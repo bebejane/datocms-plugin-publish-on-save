@@ -1,4 +1,3 @@
-import { Canvas } from 'datocms-react-ui';
 import { RenderItemFormOutletCtx } from 'datocms-plugin-sdk';
 import { useEffect } from 'react';
 import { buildClient } from '@datocms/cma-client-browser';
@@ -19,7 +18,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
     if (!ctx.currentUserAccessToken || parameters.disable) return
 
     const isPublished = itemStatus === 'published'
-    const isUpdated = itemStatus === 'draft' || ctx.itemStatus === 'updated'
+    const isUpdated = (itemStatus === 'draft' || ctx.itemStatus === 'updated') && ctx.isFormDirty
     const client = buildClient({ apiToken: ctx.currentUserAccessToken as string })
 
     const confirm = async () => {
@@ -56,7 +55,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
     if (draftMode && !isPublished && isUpdated)
       publishItem()
 
-  }, [itemStatus, draftMode, parameters.alertOnSave])
+  }, [itemStatus, draftMode, ctx.isFormDirty, parameters.alertOnSave])
 
   return null
 }
