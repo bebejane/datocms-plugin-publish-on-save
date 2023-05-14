@@ -1,5 +1,5 @@
 import { RenderItemFormOutletCtx } from 'datocms-plugin-sdk';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { buildClient } from '@datocms/cma-client-browser';
 import { Parameters } from './ConfigScreen';
 
@@ -11,15 +11,20 @@ export default function PublishOnSave({ ctx }: PropTypes) {
 
   const parameters = ctx.plugin.attributes.parameters as Parameters;
   const draftMode = ctx.itemType.attributes.draft_mode_active
-  const itemStatus = ctx.itemStatus;
+  const { itemStatus, isFormDirty, isSubmitting } = ctx;
+  const [wasSubmitting, setWasSubmitting] = useState<boolean | null>(null)
 
   useEffect(() => {
 
     if (!ctx.currentUserAccessToken || parameters.disable) return
 
     const isPublished = itemStatus === 'published'
-    const isUpdated = (itemStatus === 'draft' || ctx.itemStatus === 'updated') && ctx.isFormDirty
+    const isUpdated = (itemStatus === 'draft' || ctx.itemStatus === 'updated') && !isPublished && wasSubmitting
     const client = buildClient({ apiToken: ctx.currentUserAccessToken as string })
+
+    const reset = () => {
+      setWasSubmitting(null)
+    }
 
     const confirm = async () => {
 
@@ -52,10 +57,21 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       }
     }
 
-    if (draftMode && !isPublished && isUpdated)
+    if (draftMode && !isPublished && isUpdated) {
       publishItem()
+      reset()
+    }
 
-  }, [itemStatus, draftMode, ctx.isFormDirty, parameters.alertOnSave])
+  }, [itemStatus, draftMode, isFormDirty, parameters.alertOnSave, wasSubmitting])
+
+  useEffect(() => {
+
+    if (!isSubmitting && wasSubmitting === null)
+      setWasSubmitting(false)
+    else if (isSubmitting && wasSubmitting === false)
+      setWasSubmitting(true)
+
+  }, [isSubmitting, wasSubmitting])
 
   return null
 }
