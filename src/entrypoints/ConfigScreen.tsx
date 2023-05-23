@@ -3,12 +3,12 @@ import { Canvas, SwitchField, Form, Button, Spinner } from 'datocms-react-ui';
 import { useState } from 'react';
 
 export type Parameters = {
-  alertOnSave: boolean;
+  autoPublish: boolean;
   disable: boolean;
 }
 
 const defaultSettings = {
-  alertOnSave: true,
+  autoPublish: false,
   disable: false
 } as Parameters
 
@@ -17,9 +17,11 @@ type Props = {
 };
 
 export default function ConfigScreen({ ctx }: Props) {
+
   const parameters = ctx.plugin.attributes.parameters as Parameters;
   const [settings, setSettings] = useState(parameters || defaultSettings)
   const [saving, setSaving] = useState(false)
+
   const haveChanged = JSON.stringify(parameters) !== JSON.stringify(settings)
 
   const saveSettings = async () => {
@@ -37,11 +39,11 @@ export default function ConfigScreen({ ctx }: Props) {
     <Canvas ctx={ctx}>
       <Form onSubmit={saveSettings}>
         <SwitchField
-          id={'alertOnSave'}
-          name={'alertOnSave'}
+          id={'autoPublish'}
+          name={'autoPublish'}
           label={'Alert on save'}
-          onChange={(value) => setSettings((prev) => ({ ...prev, alertOnSave: value }))}
-          value={settings.alertOnSave}
+          onChange={(value) => setSettings((prev) => ({ ...prev, autoPublish: value }))}
+          value={settings.autoPublish}
         />
         <SwitchField
           id={'disabled'}

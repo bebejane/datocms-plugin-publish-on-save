@@ -1,6 +1,6 @@
 {
 	"name": "datocms-plugin-publish-on-save",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"private": true,
 	"dependencies": {
 		"@datocms/cma-client-browser": "1.2.9",
@@ -42,10 +42,18 @@
 	"devDependencies": {
 		"cross-env": "^7.0.3"
 	},
+	"homepage": "https://github.com/bebejane/datocms-plugin-publish-on-save",
+	"description": "Alerts the user when a record is saved to also publish it.",
+	"keywords": [
+		"datocms-plugin"
+	],
 	"datoCmsPlugin": {
 		"title": "Publish on save",
-		"previewImage": "",
-		"coverImage": "",
-		"entryPoint": "build/index.html"
+		"coverImage": "docs/cover.png",
+		"previewImage": "docs/preview.mp4",
+		"entryPoint": "build/index.html",
+		"permissions": [
+			"currentUserAccessToken"
+		]
 	}
 }

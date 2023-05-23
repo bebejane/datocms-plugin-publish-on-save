@@ -28,7 +28,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
 
     const confirm = async () => {
 
-      if (!parameters.alertOnSave) return true
+      if (parameters.autoPublish) return true
 
       return await ctx.openConfirm({
         title: 'Save and publish?',
@@ -47,7 +47,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       const confirmed = await confirm()
 
       if (confirmed) {
-        const message = !parameters.alertOnSave ? 'Auto-Publishing record...' : 'Publishing record...'
+        const message = parameters.autoPublish ? 'Auto-Publishing record...' : 'Publishing record...'
         ctx.notice(message)
         try {
           await client.items.publish(ctx.item?.id as string, { recursive: true })
@@ -62,7 +62,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       reset()
     }
 
-  }, [itemStatus, draftMode, isFormDirty, parameters.alertOnSave, wasSubmitting])
+  }, [itemStatus, draftMode, isFormDirty, parameters.autoPublish, wasSubmitting])
 
   useEffect(() => {
 
