@@ -1,5 +1,5 @@
 {
-	"name": "datocms-plugin-save-on-publish",
+	"name": "datocms-plugin-publish-on-save",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
