@@ -41,7 +41,7 @@ export default function ConfigScreen({ ctx }: Props) {
         <SwitchField
           id={'autoPublish'}
           name={'autoPublish'}
-          label={'Alert on save'}
+          label={'Auto publish'}
           onChange={(value) => setSettings((prev) => ({ ...prev, autoPublish: value }))}
           value={settings.autoPublish}
         />
