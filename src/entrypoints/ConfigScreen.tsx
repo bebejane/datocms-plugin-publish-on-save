@@ -48,7 +48,7 @@ export default function ConfigScreen({ ctx }: Props) {
         <SwitchField
           id={'disabled'}
           name={'disabled'}
-          label={'Disable'}
+          label={'De-activate plugin'}
           onChange={(value) => setSettings((prev) => ({ ...prev, disable: value }))}
           value={settings.disable}
         />

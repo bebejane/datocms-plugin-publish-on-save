@@ -33,7 +33,7 @@ export default function PublishOnSave({ ctx }: PropTypes) {
       return await ctx.openConfirm({
         title: 'Save and publish?',
         content: '',
-        cancel: { label: 'Close', value: false },
+        cancel: { label: 'Publish later', value: false },
         choices: [
           { label: 'Yes, publish now', value: true, intent: 'negative' },
         ],
